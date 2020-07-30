@@ -1,23 +1,31 @@
 import { combineReducers } from "redux";
 
-const songReducer = () => {
-  return [
-    { title: "asdasd", duration: "3:40" },
-    { title: "as878", duration: "3:00" },
-    { title: "WWEWEWasd", duration: "5:10" },
-    { title: "EEEEE", duration: "4:10" },
-  ];
+const initState = {
+  genres: [],
+  genreArtists: [],
 };
 
-const selectedSongReducer = (selectedSong = null, action) => {
-  if ((action.type = "SONG_SELECTD")) {
-    return action.payload;
-  }
+const reducer = (state = initState, action) => {
+  const { genres, genreArtists } = state;
 
-  return selectedSong;
+  switch (action.type) {
+    case "GENRE_SELECTD":
+      return {
+        ...state,
+        genres: [...genres, action.payload],
+      };
+      break;
+    case "ARTISTS_SELECTED":
+      return {
+        ...state,
+        genreArtists: [...genreArtists, action.payload],
+      };
+      break;
+    default:
+      return initState;
+  }
 };
 
 export default combineReducers({
-  songs: songReducer,
-  selectedSong: selectedSongReducer,
+  reducer,
 });

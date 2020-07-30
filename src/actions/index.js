@@ -1,6 +1,13 @@
-export const selectSong = (song) => {
+export const fetchGenres = (genres) => {
   return {
-    type: "SONG_SELECTD",
-    payload: song,
+    type: "FETCHING_GENRES",
+    payload: genres,
+  };
+};
+
+export const selectArtistsGenre = (artists) => {
+  return {
+    type: "ARTISTS_SELECTED",
+    payload: artists,
   };
 };

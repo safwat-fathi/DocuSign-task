@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Header, Icon, Modal } from "semantic-ui-react";
+import { connect } from "react-redux";
+import ArtistsModal from "./ArtistsModal";
 import Spinner from "./Spinner";
 
+import { fetchGenres, selectArtistsGenre } from "../actions";
+
+// instance of axios with base URL
 import api from "../utils/api";
 
 const App = () => {
@@ -27,6 +31,8 @@ const App = () => {
     let genreID = e.target.value;
     console.log(genreID);
 
+    // redux action
+
     api
       .get(`/genre/${genreID}/artists`)
       .then((response) => {
@@ -38,42 +44,37 @@ const App = () => {
       });
   };
 
-  useEffect(() => {
-    console.log(artistsGenre);
-  });
-
   return loading ? (
     <div>
       <Spinner />
     </div>
   ) : (
-    <div>
+    <>
       {genres.data.map((genre) => (
         <div className="card" key={genre.id}>
           <img src={genre.picture} alt="" />
           <h2>{genre.name}</h2>
-          <a href="#"></a>
 
-          <Modal
+          <ArtistsModal
             trigger={
               <button onClick={handleClick} type="button" value={genre.id}>
                 show artists
               </button>
             }
-            closeIcon
-          >
-            <Header content={`Atrists In ${genre.name}`} />
-            <Modal.Content>
-              <p>Artists:</p>
-              <p>
-                {loadingArtistsGenre ? "loading..." : `${artistsGenre.length}`}
-              </p>
-            </Modal.Content>
-          </Modal>
+            genre={genre}
+            artistsGenre={artistsGenre}
+            loadingArtistsGenre={loadingArtistsGenre}
+          />
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  console.log(state);
+
+  return { songs: state.songs };
+};
+
+export default connect(mapStateToProps)(App);
