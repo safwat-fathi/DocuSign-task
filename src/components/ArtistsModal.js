@@ -1,21 +1,33 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Header, Modal } from "semantic-ui-react";
 
-const artistsModal = ({
+const ArtistsModal = ({
   trigger,
   genre,
-  loadingArtistsGenre,
-  artistsGenre,
+  loadingGenreArtists,
+  genreArtists,
 }) => {
   return (
     <Modal trigger={trigger} closeIcon>
-      <Header content={`Atrists In ${genre.name}`} />
+      <Header content={`Atrists in ${genre.name}`} />
       <Modal.Content>
-        <p>Artists:</p>
-        <p>{loadingArtistsGenre ? "loading..." : `${artistsGenre.length}`}</p>
+        {loadingGenreArtists ? (
+          <h3>Loading...</h3>
+        ) : (
+          <ol>
+            {genreArtists.map((artist) => (
+              <li key={artist.id}>{artist.name}</li>
+            ))}
+          </ol>
+        )}
       </Modal.Content>
     </Modal>
   );
 };
 
-export default artistsModal;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps)(ArtistsModal);

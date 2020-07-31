@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+// import { combineReducers } from "redux";
 
 const initState = {
   loading: false,
@@ -9,7 +9,7 @@ const initState = {
 };
 
 const rootReducer = (state = initState, action) => {
-  console.log(action);
+  const { genres } = state;
 
   switch (action.type) {
     case "FETCHING_GENRES_PENDING":
@@ -17,15 +17,13 @@ const rootReducer = (state = initState, action) => {
         ...state,
         loading: true,
       };
-      break;
     case "FETCHING_GENRES_SUCCESS":
       return {
         ...state,
         loading: false,
-        genres: [...state.genres, action.payload],
+        genres: [...genres, ...action.payload],
         error: "",
       };
-      break;
     case "FETCHING_GENRES_FAILED":
       return {
         ...state,
@@ -33,26 +31,27 @@ const rootReducer = (state = initState, action) => {
         genres: [],
         error: action.payload,
       };
-      break;
-    case "FETCHING_ARTISTS_PENDING":
+    case "FETCHING_ARTISTS_GENRE_PENDING":
       return {
         ...state,
         loadingGenreArtists: true,
       };
-      break;
-    case "FETCHING_ARTISTS_SUCCESS":
+    case "FETCHING_ARTISTS_GENRE_SUCCESS":
       return {
         ...state,
         loadingGenreArtists: false,
-        genreArtists: [...state.genreArtists, action.payload],
+        genreArtists: [...action.payload],
       };
-      break;
+    case "FETCHING_ARTISTS_GENRE_FAILED":
+      return {
+        ...state,
+        loadingGenreArtists: false,
+        genreArtists: [],
+        error: action.payload,
+      };
     default:
       return state;
   }
 };
 
-// export default combineReducers({
-//   rootReducer,
-// });
 export default rootReducer;
