@@ -1,31 +1,58 @@
 import { combineReducers } from "redux";
 
 const initState = {
+  loading: false,
+  loadingGenreArtists: false,
   genres: [],
   genreArtists: [],
+  error: "",
 };
 
-const reducer = (state = initState, action) => {
-  const { genres, genreArtists } = state;
+const rootReducer = (state = initState, action) => {
+  console.log(action);
 
   switch (action.type) {
-    case "GENRE_SELECTD":
+    case "FETCHING_GENRES_PENDING":
       return {
         ...state,
-        genres: [...genres, action.payload],
+        loading: true,
       };
       break;
-    case "ARTISTS_SELECTED":
+    case "FETCHING_GENRES_SUCCESS":
       return {
         ...state,
-        genreArtists: [...genreArtists, action.payload],
+        loading: false,
+        genres: [...state.genres, action.payload],
+        error: "",
+      };
+      break;
+    case "FETCHING_GENRES_FAILED":
+      return {
+        ...state,
+        loading: false,
+        genres: [],
+        error: action.payload,
+      };
+      break;
+    case "FETCHING_ARTISTS_PENDING":
+      return {
+        ...state,
+        loadingGenreArtists: true,
+      };
+      break;
+    case "FETCHING_ARTISTS_SUCCESS":
+      return {
+        ...state,
+        loadingGenreArtists: false,
+        genreArtists: [...state.genreArtists, action.payload],
       };
       break;
     default:
-      return initState;
+      return state;
   }
 };
 
-export default combineReducers({
-  reducer,
-});
+// export default combineReducers({
+//   rootReducer,
+// });
+export default rootReducer;

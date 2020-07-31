@@ -1,56 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import ArtistsModal from "./ArtistsModal";
 import Spinner from "./Spinner";
 
-import { fetchGenres, selectArtistsGenre } from "../actions";
+import { fetchGenres } from "../actions";
 
-// instance of axios with base URL
-import api from "../utils/api";
-
-const App = () => {
-  const [genres, setGenres] = useState([]);
-  const [artistsGenre, setArtistsGenre] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingArtistsGenre, setLoadingArtistsGenre] = useState(true);
+const App = (props) => {
+  console.log(props);
 
   useEffect(() => {
-    api
-      .get("/genre")
-      .then((response) => {
-        setGenres(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    props.fetchGenres();
   }, []);
 
   const handleClick = (e) => {
     e.preventDefault();
     let genreID = e.target.value;
     console.log(genreID);
-
-    // redux action
-
-    api
-      .get(`/genre/${genreID}/artists`)
-      .then((response) => {
-        setArtistsGenre(response.data);
-        setLoadingArtistsGenre(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
-  return loading ? (
+  return props.loading ? (
     <div>
       <Spinner />
     </div>
   ) : (
     <>
-      {genres.data.map((genre) => (
+      {props.genres.map((genre) => (
         <div className="card" key={genre.id}>
           <img src={genre.picture} alt="" />
           <h2>{genre.name}</h2>
@@ -62,8 +36,8 @@ const App = () => {
               </button>
             }
             genre={genre}
-            artistsGenre={artistsGenre}
-            loadingArtistsGenre={loadingArtistsGenre}
+            // artistsGenre={artistsGenre}
+            loadingArtistsGenre={props.loadingArtistsGenre}
           />
         </div>
       ))}
@@ -72,9 +46,13 @@ const App = () => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
-
-  return { songs: state.songs };
+  return state;
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchGenres: () => dispatch(fetchGenres()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
