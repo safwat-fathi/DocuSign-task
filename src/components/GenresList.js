@@ -1,28 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+
+import { Link } from "react-router-dom";
+
 import ArtistsModal from "./ArtistsModal";
 import Spinner from "./Spinner";
 
 import { fetchGenres, fetchGenreArtists } from "../actions";
 
-const GenresList = ({
-  loading,
-  loadingGenreArtists,
-  genres,
-  fetchGenres,
-  fetchGenreArtists,
-  error,
-}) => {
+const GenresList = (props) => {
+  // props
+  const {
+    loading,
+    loadingGenreArtists,
+    genres,
+    fetchGenres,
+    fetchGenreArtists,
+    error,
+  } = props;
+
+  // state
+  // const [genreID, setGenreID] = useState(false);
+
   useEffect(() => {
     fetchGenres();
   }, []);
-
-  const handleClick = (e) => {
-    e.preventDefault();
-
-    let genreID = e.target.value;
-    fetchGenreArtists(genreID);
-  };
 
   return loading ? (
     <div>
@@ -34,15 +36,26 @@ const GenresList = ({
         <div className="card" key={genre.id}>
           <img src={genre.picture} alt="" />
           <h2>{genre.name}</h2>
-
+          {/* <Link to={{ pathname: `/${genre.id}`, state: { modal: true } }}>
+            show artists
+          </Link> */}
           <ArtistsModal
             trigger={
-              <button onClick={handleClick} type="button" value={genre.id}>
+              // <button onClick={handleShow} type="button" value={genre.id}>
+              //   show artists
+              // </button>
+              <Link
+                onClick={() => {
+                  fetchGenreArtists(genre.id);
+                }}
+                to={`/${genre.id}`}
+              >
                 show artists
-              </button>
+              </Link>
             }
             genre={genre}
             loadingGenreArtists={loadingGenreArtists}
+            closeIcon={<Link to={`/`}>Close</Link>}
           />
         </div>
       ))}

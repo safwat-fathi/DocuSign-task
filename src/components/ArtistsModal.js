@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 import { Header, Modal } from "semantic-ui-react";
 
-const ArtistsModal = ({
-  trigger,
-  genre,
-  loadingGenreArtists,
-  genreArtists,
-}) => {
+const ArtistsModal = (props) => {
+  const {
+    trigger,
+    closeIcon,
+    genre,
+    loadingGenreArtists,
+    genreArtists,
+  } = props;
+  console.log(props);
   return (
-    <Modal trigger={trigger} closeIcon>
+    <Modal
+      trigger={trigger}
+      closeIcon={closeIcon}
+      onOpen={
+        (e) => {
+          console.log("opening");
+        }
+        // dispatch({ event: e.type, name: "onOpen", type: "OPEN_MODAL" })
+      }
+      onClose={
+        (e) => {
+          console.log("closing");
+          props.history.push("/");
+        }
+        // dispatch({ event: e.type, name: "onClose", type: "CLOSE_MODAL" })
+      }
+    >
       <Header content={`Atrists in ${genre.name}`} />
       <Modal.Content>
         {loadingGenreArtists ? (
@@ -30,4 +51,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(ArtistsModal);
+export default compose(withRouter, connect(mapStateToProps))(ArtistsModal);
