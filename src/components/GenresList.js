@@ -55,7 +55,6 @@ const GenresList = (props) => {
             }
             genre={genre}
             loadingGenreArtists={loadingGenreArtists}
-            closeIcon={<Link to={`/`}>Close</Link>}
           />
         </div>
       ))}

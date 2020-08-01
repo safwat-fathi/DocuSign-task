@@ -16,20 +16,10 @@ const ArtistsModal = (props) => {
   return (
     <Modal
       trigger={trigger}
-      closeIcon={closeIcon}
-      onOpen={
-        (e) => {
-          console.log("opening");
-        }
-        // dispatch({ event: e.type, name: "onOpen", type: "OPEN_MODAL" })
-      }
-      onClose={
-        (e) => {
-          console.log("closing");
-          props.history.push("/");
-        }
-        // dispatch({ event: e.type, name: "onClose", type: "CLOSE_MODAL" })
-      }
+      closeIcon
+      onClose={(e) => {
+        props.history.push("/");
+      }}
     >
       <Header content={`Atrists in ${genre.name}`} />
       <Modal.Content>
