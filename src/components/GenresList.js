@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
@@ -7,6 +8,20 @@ import ArtistsModal from "./ArtistsModal";
 import Spinner from "./Spinner";
 
 import { fetchGenres, fetchGenreArtists } from "../actions";
+
+const Card = styled.div`
+  text-align: center;
+  width: 30%;
+  padding: 10px 0;
+  margin: 15px auto;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #eae7e7;
+`;
 
 const GenresList = (props) => {
   // props
