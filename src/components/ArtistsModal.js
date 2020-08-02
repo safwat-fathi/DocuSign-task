@@ -12,7 +12,7 @@ const ArtistsModal = (props) => {
     loadingGenreArtists,
     genreArtists,
   } = props;
-  console.log(props);
+
   return (
     <Modal
       trigger={trigger}

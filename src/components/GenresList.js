@@ -48,17 +48,11 @@ const GenresList = (props) => {
   ) : (
     <>
       {genres.map((genre) => (
-        <div className="card" key={genre.id}>
+        <Card key={genre.id}>
           <img src={genre.picture} alt="" />
           <h2>{genre.name}</h2>
-          {/* <Link to={{ pathname: `/${genre.id}`, state: { modal: true } }}>
-            show artists
-          </Link> */}
           <ArtistsModal
             trigger={
-              // <button onClick={handleShow} type="button" value={genre.id}>
-              //   show artists
-              // </button>
               <Link
                 onClick={() => {
                   fetchGenreArtists(genre.id);
@@ -71,7 +65,7 @@ const GenresList = (props) => {
             genre={genre}
             loadingGenreArtists={loadingGenreArtists}
           />
-        </div>
+        </Card>
       ))}
     </>
   );
